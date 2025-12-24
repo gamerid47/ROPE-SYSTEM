@@ -1,0 +1,13 @@
+On Awake
+set rope_template = cylinder(our rope)
+set has_last = false
+
+
+
+Variables used:-
+as ANY TYPE(rope_template, rope_instance)
+as FLOAT(last_x, last_y, last_z, curr_x, curr_y, curr_z, rope_length, dx, dy, dz, Yaw_angle, pitch_angle, horiz_distance,)
+as BOOL(has_last)
+
+SUBSCRIBE TO GAMER ID47
+set or modify is the same, don't copy paste cuz I wrote only the block meanings, find and use your own

@@ -1,0 +1,49 @@
+On Player Enter
+{
+    set curr_x = Trigger(this entity) position X
+    set curr_y = Trigger(this entity) position Y
+    set curr_z = Trigger(this entity) position Z
+
+    If (has_last == false)
+    {
+        set last_x = curr_x
+        set last_y = curr_y
+        set last_z = curr_z
+        set has_last = true
+    }
+    Else
+    {
+        clone rope_template - [created entity]
+        set rope_instance = created entity
+
+        set property rope_instance position = last_x . last_y . last_z
+
+        set dx = curr_x - last_x
+        set dy = curr_y - last_y
+        set dz = curr_z - last_z
+
+        set rope_length = Distance between (last_x, last_y, last_z) and (curr_x, curr_y, curr_z)
+
+        set property rope_instance scale = 0.1 rope_length 0.1
+
+        set yaw_angle = Angle between (0, 0, 1) and (dx, 0, dz)
+
+        If (dx < 0)
+        {
+            set yaw_angle = negate(yaw_angle)
+        }
+
+        set horiz_distance = sqrt((dx * dx) + (dz * dz))
+
+        set pitch_angle = Angle between (0, 1, 0) and (horiz_distance, dy, 0)
+
+        set rope_instance rotation = pitch_angle yaw_angle 0
+
+        set last_x = curr_x
+        set last_y = curr_y
+        set last_z = curr_z
+    }
+}
+
+SUBSCRIBE TO GAMER ID47
+DON'T COPY AND PASTE I WROTE ONLY THE BLOCK CODE MEANING HERE, FIND THOSE BLOCK AND USE THEM IN CORRECT ORDER (MOSTLY)
