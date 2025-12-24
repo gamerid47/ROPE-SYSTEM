@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROPE SYSTEM CRAFTLAND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Google+Sans+Display:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6750A4;
+            --primary-container: #EADDFF;
+            --secondary: #625B71;
+            --secondary-container: #E8DEF8;
+            --surface: #FEF7FF;
+            --surface-variant: #E7E0EC;
+            --on-surface: #1C1B1F;
+            --on-primary: #FFFFFF;
+            --outline: #79747E;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
+            --elevation-3: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
+            --radius-small: 8px;
+            --radius-medium: 12px;
+            --radius-large: 20px;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--surface);
+            color: var(--on-surface);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .header-card {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius-large);
+            box-shadow: var(--elevation-1);
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--surface-variant);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--elevation-2);
+            transform: translateY(-2px);
+        }
+
+        .card.elevated {
+            box-shadow: var(--elevation-2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--surface-variant);
+        }
+
+        .card-icon {
+            background-color: var(--primary-container);
+            color: var(--primary);
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Google Sans Display', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--on-surface);
+        }
+
+        .main-title {
+            font-family: 'Google Sans Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-item {
+            counter-increment: step-counter;
+            padding: 16px 0 16px 64px;
+            position: relative;
+            border-bottom: 1px solid var(--surface-variant);
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 16px;
+            background-color: var(--primary);
+            color: var(--on-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .step-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .resource-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .resource-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .resource-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex-grow: 1;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--surface-variant);
+            border-radius: var(--radius-medium);
+            text-decoration: none;
+            color: var(--on-surface);
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            justify-content: space-between;
+        }
+
+        .link-button:hover {
+            background-color: var(--secondary-container);
+            transform: translateY(-2px);
+            box-shadow: var(--elevation-1);
+        }
+
+        .link-button.primary {
+            background-color: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .link-button.primary:hover {
+            background-color: #5A4A8F;
+        }
+
+        .link-icon {
+            font-size: 1.2rem;
+        }
+
+        .video-section {
+            grid-column: span 1;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .video-section {
+                grid-column: span 2;
+            }
+        }
+
+        .video-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px;
+        }
+
+        .video-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .video-title {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .video-description {
+            color: var(--secondary);
+            margin-bottom: 24px;
+            max-width: 500px;
+        }
+
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .chip {
+            background-color: var(--surface-variant);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .header-card {
+            text-align: center;
+            padding: 40px 32px;
+            background: linear-gradient(135deg, var(--primary-container) 0%, #F3EDF7 100%);
+            border: none;
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .emphasis {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .notice-card {
+            background-color: #FFEDED;
+            border-left: 6px solid #D32F2F;
+            padding: 24px;
+            margin: 32px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .notice-title {
+            color: #C62828;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Card -->
+        <div class="card header-card">
+            <div class="header-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <h1 class="main-title">ROPE SYSTEM IN CRAFTLAND</h1>
+            <p class="subtitle">Each trigger equals each new rope section. Follow the steps below to implement the rope system in your Craftland project.</p>
+        </div>
+
+        <!-- Steps Card -->
+        <div class="card elevated">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-list-ol"></i>
+                </div>
+                <h2 class="card-title">Implementation Steps</h2>
+            </div>
+            <ol class="step-list">
+                <li class="step-item">
+                    <div class="step-text">MAKE A ROPE CYLINDER</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-text">MAKE SOME VARIABLES INSIDE GLOBAL SCRIPT EDITOR</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-text">MAKE SOME SCRIPT IN GLOBAL SCRIPT EDITOR</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-text">MAKE SAME SCRIPT IN EACH TRIGGER</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-text">DUPLICATE THE TRIGGER AND PLACE IT ON YOUR DESIRED PLACES</div>
+                </li>
+            </ol>
+            
+            <div class="chip-container">
+                <div class="chip">Step-by-step</div>
+                <div class="chip">Easy to follow</div>
+                <div class="chip">5 steps total</div>
+            </div>
+        </div>
+        
+        <div class="notice-card">
+            <div class="notice-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Important Notice</span>
+            </div>
+            <p>Do not copy and paste directly as the instructions describe the meaning of block codes, not the exact code. Find the corresponding block codes and use them in the correct order. These instructions are primarily for Mobile Craftland; PC Craftland may use different block codes or text coding. Watch the tutorial video for a better understanding.</p>
+        </div>
+
+        <!-- Global Script Card -->
+        <div class="card resource-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h2 class="card-title">GLOBAL SCRIPT</h2>
+            </div>
+            <div class="resource-links">
+                <a href="#" class="link-button">
+                    <span>VIEW AS IMAGE</span>
+                    <i class="fas fa-image link-icon"></i>
+                </a>
+                <a href="#" class="link-button">
+                    <span>VIEW AS TEXT</span>
+                    <i class="fas fa-file-alt link-icon"></i>
+                </a>
+            </div>
+            <div class="chip-container">
+                <div class="chip">Global scope</div>
+                <div class="chip">Variables</div>
+                <div class="chip">Easy logic</div>
+            </div>
+        </div>
+
+        <!-- Trigger Script Card -->
+        <div class="card resource-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2 class="card-title">TRIGGER SCRIPT</h2>
+            </div>
+            <div class="resource-links">
+                <a href="#" class="link-button">
+                    <span>VIEW AS IMAGE</span>
+                    <i class="fas fa-image link-icon"></i>
+                </a>
+                <a href="#" class="link-button">
+                    <span>VIEW AS TEXT</span>
+                    <i class="fas fa-file-alt link-icon"></i>
+                </a>
+            </div>
+            <div class="chip-container">
+                <div class="chip">Triggers</div>
+                <div class="chip">Local script</div>
+                <div class="chip">Repeatable</div>
+                <div class="chip">Main logic</div>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="card video-card">
+                <div class="video-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <h2 class="video-title">Video Tutorial</h2>
+                <p class="video-description">Watch a step-by-step video tutorial demonstrating how to implement the rope system in Craftland.</p>
+                <a href="https://youtu.be/HPrczMp9QjU" class="link-button primary">
+                    <span>WATCH ON YOUTUBE</span>
+                    <i class="fab fa-youtube link-icon"></i>
+                </a>
+                <a href="https://youtu.be/@gamerid47" class="link-button primary" style="margin-top: 20px">
+                    <i class="fab fa-youtube link-icon"></i>
+                    <span> SUBSCRIBE</span>
+                    
+                </a>
+                <div class="chip-container">
+                    <div class="chip">Visual guide</div>
+                    <div class="chip">Practical demonstration</div>
+                    <div class="chip">11:51 duration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactivity to cards and buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const buttons = document.querySelectorAll('.link-button');
+            
+            // Add click effect to cards
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't trigger if clicking a link inside the card
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        return;
+                    }
+                    
+                    this.style.transform = 'scale(0.99)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // Add ripple effect to buttons
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.7);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        top: ${y}px;
+                        left: ${x}px;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // Add CSS for ripple animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
